@@ -1,45 +1,75 @@
-from math import exp
+from math import exp, sqrt
 
 
 def division(): print("---------------------------------------------------")
 
 
-def f(a_f: float, b_f: float, x_f: float): return (a_f / exp(x_f)) + b_f * x_f
+def f(x_f: float): return (a0 / exp(x_f)) + b0 * x_f
 
 
-def dihotomia(a0_dix: float, b0_dix: float, a_dix: float, b_dix: float, epsilon_dix: float, delta_dix: float):
-    root: float
+def zolotsech(a_zol: float, b_zol: float, epsilon_zol: float):
+    root: float  # искомое число(точка минимума)
+    delta_0: float
+    delta_1: float
+    delta_2: float
+    x0: float
+    y0: float
+
     x1: float
     y1: float
-    l = 1  # длина отрезка [a,b]
-    k = 1.0  # итерация
-    while l >= epsilon_dix:
-        x1 = (a_dix + b_dix) / 2.0 - delta_dix
-        y1 = (a_dix + b_dix) / 2.0 + delta_dix
-        if f(a0, b0, x1) <= f(a0, b0, y1):
-            print("f(" + x1.__str__() + ") = " + f(a0, b0, x1).__str__())
-            print("f(" + y1.__str__() + ") = " + f(a0, b0, y1).__str__())
-            print("f(" + x1.__str__() + ") <= f(" + y1.__str__() + ")")
-            b_dix = y1
-            print("Новый интервал: [" + a_dix.__str__() + ", " + y1.__str__() + "]")
-            division()
 
+    # Производим вычисления для k = 0
+    delta_0 = b_zol - a_zol
+    delta_1 = (sqrt(5.0)-1.0)/2.0 * delta_0
+    delta_2 = delta_0 - delta_1
+    x0 = a_zol + delta_2
+    y0 = b_zol - delta_2
+
+    fx0: float = f(x0)
+    fy0: float = f(y0)
+
+    k: float = 1.0  # Итерация
+    while True:
+        division()
+        print("Итерация номер " + k.__str__())
+        if f(x0) <= f(y0):
+            b_zol = y0
+            y1 = x0
+            x1 = a_zol + delta_2
+            print("Новый интервал: [" + a_zol.__str__() + ", " + b_zol.__str__() + "]")
+            print("x_k = " + x1.__str__())
+            print("y_k = " + y1.__str__())
+            print("delta_k = " + delta_1.__str__())
+            if x1 < y1:
+                if delta_1 <= epsilon_zol:
+                    print("Так как delta_k <= epsilon процесс завершён.")
+                    root = (x1 + y1)/2.0
+                    break
+            k += 1
+            delta_0 = delta_2
+            delta_2 = delta_1 - delta_2
+            delta_1 = delta_0
+            y0 = y1
+            x0 = x1
         else:
-            a_dix = x1
-            print("f(" + x1.__str__() + ") = " + f(a0, b0, x1).__str__())
-            print("f(" + y1.__str__() + ") = " + f(a0, b0, y1).__str__())
-            print("f(" + x1.__str__() + ") >= f(" + y1.__str__() + ")")
-            print("Новый интервал: [" + x1.__str__() + ", " + b_dix.__str__() + "]")
-            division()
-        l = (b_dix - a_dix) / (2.0 ** k) + ((2.0 ** k - 1.0) / (2.0 ** (k - 1.0))) * delta_dix
-        print("Длина нового интервала равна: l = " + l.__str__())
-
-        if l < 2.0 * delta_dix:
-            print("Длина интервала стала меньше 2*delta: " + l.__str__() + " < " + (2.0 * delta_dix).__str__())
-            break
-        k = k + 1.0
-
-    root = (a_dix + b_dix) / 2.0
+            a_zol = x0
+            x1 = y0
+            y1 = b_zol - delta_2
+            print("Новый интервал: [" + a_zol.__str__() + ", " + b_zol.__str__() + "]")
+            print("x_k = " + x1.__str__())
+            print("y_k = " + y1.__str__())
+            print("delta_k = " + delta_1.__str__())
+            if x1 < y1:
+                if delta_1 <= epsilon_zol:
+                    print("Так как delta_k <= epsilon процесс завершён.")
+                    root = (x1 + y1) / 2.0
+                    break
+            k += 1
+            delta_0 = delta_2
+            delta_2 = delta_1 - delta_2
+            delta_1 = delta_0
+            y0 = y1
+            x0 = x1
     return root
 
 
@@ -56,11 +86,7 @@ a = -100.0
 b = 100.0
 print("Рассматриваемый интервал: [" + a.__str__() + ", " + b.__str__() + "]")
 
-epsilon = 0.001
-while True:
-    delta = float(input("Введите дельту на которую будем отступать(должна быть меньше epsilon/2): "))
-    if delta <= epsilon / 2.0:
-        print("Точка минимума равна " + dihotomia(a0, b0, a, b, epsilon, delta).__str__())
-        break
-    else:
-        print("Значение дельты задано не верно.")
+epsilon = 0.0001
+
+print("Точка минимума равна " + zolotsech(a, b, epsilon).__str__())
+
