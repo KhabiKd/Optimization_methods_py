@@ -1,66 +1,52 @@
-from math import exp
+from math import exp, sqrt
 
 
 def division(): print("---------------------------------------------------")
 
 
-def f(a_f: float, b_f: float, x_f: float): return (a_f / exp(x_f)) + b_f * x_f
+def f(x1_f: float, x2_f: float): return 100 * (x2_f - x1_f * x1_f) + (1 - x1_f) * (1 - x1_f)
 
 
-def dihotomia(a0_dix: float, b0_dix: float, a_dix: float, b_dix: float, epsilon_dix: float, delta_dix: float):
+def difmnog(x1_dif: float, y1_dif: float, x2_dif: float, y2_dif: float, x3_dif: float, y3_dif: float):
+    n: float = 2
+    alpha: float = 1.0
+    betta: float = 0.5
+    gamma: float = 2.0
+    epsilon: float = 0.001
+    k: float = 0.0
     root: float
-    x1: float
-    y1: float
-    l = 1  # длина отрезка [a,b]
-    k = 1.0  # итерация
-    while l >= epsilon_dix:
-        x1 = (a_dix + b_dix) / 2.0 - delta_dix
-        y1 = (a_dix + b_dix) / 2.0 + delta_dix
-        if f(a0, b0, x1) <= f(a0, b0, y1):
-            print("f(" + x1.__str__() + ") = " + f(a0, b0, x1).__str__())
-            print("f(" + y1.__str__() + ") = " + f(a0, b0, y1).__str__())
-            print("f(" + x1.__str__() + ") <= f(" + y1.__str__() + ")")
-            b_dix = y1
-            print("Новый интервал: [" + a_dix.__str__() + ", " + y1.__str__() + "]")
-            division()
 
-        else:
-            a_dix = x1
-            print("f(" + x1.__str__() + ") = " + f(a0, b0, x1).__str__())
-            print("f(" + y1.__str__() + ") = " + f(a0, b0, y1).__str__())
-            print("f(" + x1.__str__() + ") >= f(" + y1.__str__() + ")")
-            print("Новый интервал: [" + x1.__str__() + ", " + b_dix.__str__() + "]")
-            division()
-        l = (b_dix - a_dix) / (2.0 ** k) + ((2.0 ** k - 1.0) / (2.0 ** (k - 1.0))) * delta_dix
-        print("Длина нового интервала равна: l = " + l.__str__())
+    xl: float  # Наилучший
+    xh: float  # Наихудший
+    xs: float
 
-        if l < 2.0 * delta_dix:
-            print("Длина интервала стала меньше 2*delta: " + l.__str__() + " < " + (2.0 * delta_dix).__str__())
-            break
-        k = k + 1.0
 
-    root = (a_dix + b_dix) / 2.0
+
     return root
 
 
 print("Активация программы...")
 division()
 
-print("Исходная функция: f(x) = a/exp(x) + bx")
-a0 = float(input("Введите значение а: "))
-b0 = float(input("Введите значение b: "))
-print("Минимизация функции: f(x) = " + a0.__str__() + "/exp(x) + " + b0.__str__() + "*x")
+print("Исходная функция: f(x, y) = 100(y - x^2)^2 + (1 - x)^2")
 division()
 
-a = -100.0
-b = 100.0
-print("Рассматриваемый интервал: [" + a.__str__() + ", " + b.__str__() + "]")
+print("Введите координаты первой точки: ")
+x1 = float(input("x1 = "))
+y1 = float(input("y1 = "))
+print("(" + x1.__str__() + ", " + y1.__str__() + ")")
+division()
 
-epsilon = 0.001
-while True:
-    delta = float(input("Введите дельту на которую будем отступать(должна быть меньше epsilon/2): "))
-    if delta <= epsilon / 2.0:
-        print("Точка минимума равна " + dihotomia(a0, b0, a, b, epsilon, delta).__str__())
-        break
-    else:
-        print("Значение дельты задано не верно.")
+print("Введите координаты второй точки: ")
+x2 = float(input("x2 = "))
+y2 = float(input("y2 = "))
+print("(" + x2.__str__() + ", " + y2.__str__() + ")")
+division()
+
+print("Введите координаты третьей точки: ")
+x3 = float(input("x3 = "))
+y3 = float(input("y3 = "))
+print("(" + x3.__str__() + ", " + y3.__str__() + ")")
+division()
+
+print("Точка минимума равна " + difmnog(x1, y1, x2, y2, x3, y3).__str__())
